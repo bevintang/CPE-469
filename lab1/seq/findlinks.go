@@ -8,8 +8,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
-	"time"
 
 	"links"
 )
@@ -18,9 +16,9 @@ import (
 // breadthFirst calls f for each item in the worklist.
 // Any items returned by f are added to the worklist.
 // f is called at most once for each item.
-func breadthFirst(f func(item string) []string, worklist []string, depth int) {
+func breadthFirst(f func(item string) []string, worklist []string) {
 	seen := make(map[string]bool)
-	for len(worklist) > 0 && depth != 0 {
+	for len(worklist) > 0 {
 		items := worklist
 		worklist = nil
 		for _, item := range items {
@@ -29,7 +27,6 @@ func breadthFirst(f func(item string) []string, worklist []string, depth int) {
 				worklist = append(worklist, f(item)...)
 			}
 		}
-		depth--
 	}
 }
 
@@ -47,33 +44,11 @@ func crawl(url string) []string {
 
 //!-crawl
 
-func testArgLength() (int, error) {
-	if len(os.Args) != 3 {
-		printUsageAndExit()
-	}
-	return strconv.Atoi(string(os.Args[1]))
-}
-
-func testError(err error) {
-	if err != nil {
-		fmt.Printf("An error occured: %e", err)
-	}
-}
-
-func printUsageAndExit() {
-	fmt.Printf("Usage: go run findlinksCon.go [DEPTH] [URL]\n")
-	os.Exit(1)
-}
-
 //!+main
 func main() {
-	start := time.Now()
-	depth, err := testArgLength()
-	testError(err)
 	// Crawl the web breadth-first,
 	// starting from the command-line arguments.
-	breadthFirst(crawl, os.Args[2:], depth+1)
-	fmt.Println(time.Now().Sub(start))
+	breadthFirst(crawl, os.Args[1:])
 }
 
 //!-main

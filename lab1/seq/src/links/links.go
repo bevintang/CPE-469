@@ -1,4 +1,4 @@
-// Copyright © 2016 The Go Programming Language 
+// Copyright © 2016 The Go Programming Language
 // License: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 //!+Extract
